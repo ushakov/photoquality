@@ -53,7 +53,8 @@ class DetailedTensorBoard(Callback):
             self.model.add_aux_update(tf.assign(self.summaries,
                                                 tf.summary.merge_all()))
 
-        self.writer = tf.summary.FileWriter(log_dir, flush_secs=10)
+        self.writer = tf.summary.FileWriter(log_dir, K.get_session().graph,
+                                            flush_secs=10)
         self.iteration = 0
         self.add_histograms = add_histograms
 
