@@ -17,7 +17,7 @@ import multi_gpu
 import keras_util
 import clr_callback
 
-gflags.DEFINE_string('config', '', 'Use named config (default is to read flags)')
+gflags.DEFINE_string('config', 'home', 'Use named config')
 
 gflags.DEFINE_string('load_model', '', 'Model to load and continue training')
 
@@ -281,7 +281,7 @@ class AVABase(object):
                                                         FLAGS.rundir))
         callbacks.append(ShowSpeed())
 
-        callbacks.append(clr_callback.CyclicLR())
+#        callbacks.append(clr_callback.CyclicLR())
 
         total_batches = int(len(self.train) * 1.0 / self.batch_size)
         epoch_size = min(total_batches, int(50000.0 / self.batch_size))
@@ -295,5 +295,5 @@ class AVABase(object):
             train_iterator, epoch_size, nb_epochs,
             callbacks=callbacks,
             validation_data=val_iterator,
-            nb_val_samples=val_batches,
-            nb_worker=FLAGS.prep_threads*FLAGS.gpus)
+            validation_steps=val_batches,
+            workers=FLAGS.prep_threads*FLAGS.gpus)
